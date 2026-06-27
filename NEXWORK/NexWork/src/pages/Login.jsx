@@ -1,9 +1,9 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { login, googleLogin, getUserProfile } from "../services/authService";
+import useRoleRedirect from "../hooks/useRoleRedirect";
 import "../stylesheets/Register.css";
 import Googleimage from "../assets/images/google.svg";
-
-const ROLES = ["Client", "Freelancer"];
 
 export default function Login() {
   const [form, setForm] = useState({
@@ -12,6 +12,7 @@ export default function Login() {
   });
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
+  const redirectByRole = useRoleRedirect();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,19 +52,9 @@ export default function Login() {
 
     try {
       const userCredential = await login(form.email, form.password);
-
       const profile = await getUserProfile(userCredential.user.uid);
 
-      console.log(profile);
-
-      // if(profile.role === "Client")
-      //      navigate("/client");
-      //
-      // if(profile.role === "Freelancer")
-      //      navigate("/freelancer");
-      //
-      // if(profile.role === null)
-      //      navigate("/complete-profile");
+      redirectByRole(profile);
     } catch (error) {
       console.error(error);
     } finally {
@@ -74,12 +65,9 @@ export default function Login() {
   const handleGoogleSignIn = async () => {
     try {
       const userCredential = await googleLogin();
-
       const profile = await getUserProfile(userCredential.user.uid);
 
-      console.log(profile);
-
-      // Navigate based on role
+      redirectByRole(profile);
     } catch (error) {
       console.error(error);
     }
@@ -151,7 +139,7 @@ export default function Login() {
         </button>
 
         <p className="register-footer">
-          Don't have an account? <a href="/register">Sign Up</a>
+          Don't have an account? <Link to="/register">Sign Up</Link>
         </p>
       </form>
     </main>
