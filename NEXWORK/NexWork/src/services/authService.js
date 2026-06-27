@@ -5,12 +5,7 @@ import {
   signOut,
 } from "firebase/auth";
 
-import {
-  doc,
-  getDoc,
-  setDoc,
-  serverTimestamp,
-} from "firebase/firestore";
+import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 
 import { auth, db, googleProvider } from "../firebase/firebase";
 
@@ -21,7 +16,7 @@ export const register = async (name, email, password, role) => {
   const userCredential = await createUserWithEmailAndPassword(
     auth,
     email,
-    password
+    password,
   );
 
   const user = userCredential.user;
@@ -85,4 +80,12 @@ export const getUserProfile = async (uid) => {
   if (!snapshot.exists()) return null;
 
   return snapshot.data();
+};
+
+/**
+ * Save the role chosen on the CompleteProfile page
+ * (used after a first-time Google sign-in, where role starts as null)
+ */
+export const updateUserRole = async (uid, role) => {
+  await setDoc(doc(db, "users", uid), { role }, { merge: true });
 };
