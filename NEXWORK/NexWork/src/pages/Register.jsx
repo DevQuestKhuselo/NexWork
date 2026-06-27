@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { register, googleLogin } from "../services/authService";
+import { register, googleLogin, getUserProfile } from "../services/authService";
+import useRoleRedirect from "../hooks/useRoleRedirect";
 import "../stylesheets/Register.css";
 import Googleimage from "../assets/images/google.svg";
 
@@ -15,6 +16,7 @@ export default function Register() {
   });
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
+  const redirectByRole = useRoleRedirect();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -71,7 +73,9 @@ export default function Register() {
 
       console.log("Registration successful");
 
-      // navigate("/dashboard")
+      // We already know the role the user just picked - no need to
+      // re-fetch the profile we just created.
+      redirectByRole({ role: form.role });
     } catch (error) {
       console.error(error);
     } finally {
@@ -80,25 +84,35 @@ export default function Register() {
   };
 
   const handleGoogleSignIn = async () => {
+    setErrors((prev) => ({ ...prev, google: "" }));
+
     try {
       const userCredential = await googleLogin();
-
       const user = userCredential.user;
 
-      console.log(user);
+      const profile = await getUserProfile(user.uid);
 
-      // Later:
-      // const profile = await getUserProfile(user.uid);
-      //
-      // if(profile.role === null){
-      //     navigate("/complete-profile");
-      // }else{
-      //     navigate("/dashboard");
-      // }
+      redirectByRole(profile);
     } catch (error) {
       console.error(error);
+
+      if (error.code === "auth/popup-closed-by-user") {
+        // User closed the popup themselves - no need to show an error.
+        return;
+      }
+
+      setErrors((prev) => ({
+        ...prev,
+        google:
+          error.code === "auth/popup-blocked"
+            ? "Your browser blocked the Google sign-in popup. Please allow popups for this site and try again."
+            : error.code === "auth/unauthorized-domain"
+            ? "This domain isn't authorized for Google sign-in yet."
+            : "Something went wrong signing in with Google. Please try again.",
+      }));
     }
   };
+
   return (
     <main className="register-page">
       <form className="register-card" onSubmit={handleSubmit} noValidate>
@@ -232,6 +246,11 @@ export default function Register() {
           <img src={Googleimage} className="btn-icon" alt="Google" />
           <span>Continue with Google</span>
         </button>
+        {errors.google && (
+          <span className="field-error" role="alert">
+            {errors.google}
+          </span>
+        )}
 
         <p className="register-footer">
           Already have an account? <a href="/login">Log in</a>
