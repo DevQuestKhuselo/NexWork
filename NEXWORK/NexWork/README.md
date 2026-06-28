@@ -1,16 +1,125 @@
-# React + Vite
+# NexWork
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+**NexWork** (Next Generation Work) is a modern web platform that connects clients and freelancers for digital, project-based work. It enables clients to post jobs, manage contracts, define milestones, and review deliverables, while freelancers can browse opportunities, submit proposals, and track work through structured project phases.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Tech Stack
 
-## React Compiler
+* **Frontend:** React (JavaScript, Vite)
+* **Backend-as-a-Service:** Firebase
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+  * Authentication (Email/Password, Google)
+  * Cloud Firestore (Database)
+  * Firebase Storage (File uploads)
+* **Hosting/Deployment:** Azure Static Web Apps
 
-## Expanding the Oxlint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## 📦 Features (Phase 1 - Current)
+
+* User authentication (Register/Login)
+* Role-based access (Client / Freelancer)
+* Firestore user profiles
+* Protected routes setup
+* Basic client and freelancer dashboards
+* Firebase project integration
+* Azure deployment-ready structure
+
+---
+
+## 🏗️ Project Structure
+
+```
+src/
+│
+├── components/
+|
+├── contexts/
+│   └── AuthContext.jsx
+|
+├── pages/
+│   ├── Login.jsx
+│   ├── Register.jsx
+│   ├── ClientDashboard.jsx
+│   └── FreelancerDashboard.jsx
+│
+├── contexts/
+│   └── AuthContext.jsx
+│
+├── firebase/
+│   └── firebase.js
+|
+├── stylesheets/
+│
+├── App.jsx
+└── main.jsx
+```
+
+---
+
+
+## ⚙️ Installation & Running Locally
+
+```bash
+# Clone the repository
+git clone https://github.com/DevQuestKhuselo/NexWork.git
+
+# Navigate into the project
+cd NexWork
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+---
+
+## 🧭 Roadmap
+
+### Phase 1 (Current)
+
+* Authentication system
+* Role-based users
+* Firebase setup
+* Basic dashboards
+
+### Phase 2
+
+* Job posting system
+* Job browsing & search
+* Proposal submissions
+
+### Phase 3
+
+* Contracts & milestones
+* Deliverable uploads
+* Approval workflow
+
+### Phase 4
+
+* Messaging system
+* Notifications
+* Reviews & ratings
+
+### Phase 5
+
+* Payments integration
+* Advanced analytics
+* AI job matching
+
+---
+
+## 💡 Vision
+
+NexWork aims to simplify how digital work is discovered, managed, and delivered by combining structured workflows (milestones, contracts) with real-time collaboration tools.
+
+---
+
+## 📌 Author
+
+Built by Khuselo Sofohlo
+
+Computer Science Student | Software Developer | Aspiring Systems Builder
